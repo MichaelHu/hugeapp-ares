@@ -4,7 +4,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import Todo from './views/todo';
 import todoapp from './views/todo/reducers';
-import replay from './views/todo/utils/replay';
+import replay from './utils/replay';
 
 let topReducer = combineReducers( { todoapp } );
 let store = createStore( topReducer );

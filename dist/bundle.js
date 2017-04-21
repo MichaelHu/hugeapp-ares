@@ -11131,6 +11131,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _react = __webpack_require__(25);
 
 var _react2 = _interopRequireDefault(_react);
@@ -11147,7 +11149,11 @@ var _TodoItem = __webpack_require__(226);
 
 var _TodoItem2 = _interopRequireDefault(_TodoItem);
 
-var _replay = __webpack_require__(228);
+var _Trackable2 = __webpack_require__(229);
+
+var _Trackable3 = _interopRequireDefault(_Trackable2);
+
+var _replay = __webpack_require__(230);
 
 var _replay2 = _interopRequireDefault(_replay);
 
@@ -11159,78 +11165,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TodoView = function (_Component) {
-    _inherits(TodoView, _Component);
+var TodoView = function (_Trackable) {
+    _inherits(TodoView, _Trackable);
 
     function TodoView(props) {
         _classCallCheck(this, TodoView);
 
-        var _this = _possibleConstructorReturn(this, (TodoView.__proto__ || Object.getPrototypeOf(TodoView)).call(this, props));
-
-        _this._name = 'TodoView';
-        var info = _this._name + ' constructor';
-        console.log(info);
-        _replay2.default.add(_this, info);
-        return _this;
+        return _possibleConstructorReturn(this, (TodoView.__proto__ || Object.getPrototypeOf(TodoView)).call(this, props, 'TodoView'));
     }
 
     _createClass(TodoView, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var info = this._name + ' componentWillMount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
 
-            var info = this._name + ' componentDidMount';
-            console.log(info);
-            _replay2.default.add(this, info);
+            _get(TodoView.prototype.__proto__ || Object.getPrototypeOf(TodoView.prototype), 'componentDidMount', this).call(this);
             setTimeout(function () {
                 var info = _this2._name + ' data ready';
                 console.log(info);
                 _replay2.default.add(_this2, info);
-                // this.setState( { items: [ { state: true, content: 'go swimming' } ]} ); 
             }, 1000);
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps() {
-            var info = this._name + ' componentWillReceiveProps';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'shouldComponentUpdate',
-        value: function shouldComponentUpdate() {
-            var info = this._name + ' shouldComponentUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-            return true;
-        }
-    }, {
-        key: 'componentWillUpdate',
-        value: function componentWillUpdate() {
-            var info = this._name + ' componentWillUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate() {
-            var info = this._name + ' componentDidUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            var info = this._name + ' componentWillUnmount';
-            console.log(info);
-            _replay2.default.add(this, info);
         }
     }, {
         key: 'onKeyUp',
@@ -11266,9 +11220,7 @@ var TodoView = function (_Component) {
                 toggleTodo = _props.toggleTodo,
                 deleteTodo = _props.deleteTodo;
 
-            var info = this._name + ' render';
-            console.log(info);
-            _replay2.default.add(this, info);
+            _get(TodoView.prototype.__proto__ || Object.getPrototypeOf(TodoView.prototype), 'render', this).call(this);
             return _react2.default.createElement(
                 'div',
                 { ref: 'dom' },
@@ -11290,7 +11242,7 @@ var TodoView = function (_Component) {
     }]);
 
     return TodoView;
-}(_react.Component);
+}(_Trackable3.default);
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
@@ -24926,7 +24878,7 @@ var _reducers = __webpack_require__(98);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-var _replay = __webpack_require__(228);
+var _replay = __webpack_require__(230);
 
 var _replay2 = _interopRequireDefault(_replay);
 
@@ -24992,11 +24944,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _react = __webpack_require__(25);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _replay = __webpack_require__(228);
+var _Trackable2 = __webpack_require__(229);
+
+var _Trackable3 = _interopRequireDefault(_Trackable2);
+
+var _replay = __webpack_require__(230);
 
 var _replay2 = _interopRequireDefault(_replay);
 
@@ -25008,72 +24966,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TodoItem = function (_Component) {
-    _inherits(TodoItem, _Component);
+var TodoItem = function (_Trackable) {
+    _inherits(TodoItem, _Trackable);
 
     function TodoItem(props) {
         _classCallCheck(this, TodoItem);
 
-        var _this = _possibleConstructorReturn(this, (TodoItem.__proto__ || Object.getPrototypeOf(TodoItem)).call(this, props));
-
-        _this._name = 'TodoItem';
-        var info = _this._name + ' constructor';
-        console.log(info);
-        _replay2.default.add(_this, info);
-        return _this;
+        return _possibleConstructorReturn(this, (TodoItem.__proto__ || Object.getPrototypeOf(TodoItem)).call(this, props, 'TodoItem'));
     }
 
     _createClass(TodoItem, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var info = this._name + ' componentWillMount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var info = this._name + ' componentDidMount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps() {
-            var info = this._name + ' componentWillReceiveProps';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'shouldComponentUpdate',
-        value: function shouldComponentUpdate() {
-            var info = this._name + ' shouldComponentUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-            return true;
-        }
-    }, {
-        key: 'componentWillUpdate',
-        value: function componentWillUpdate() {
-            var info = this._name + ' componentWillUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate() {
-            var info = this._name + ' componentDidUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            var info = this._name + ' componentWillUnmount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
         key: 'onItemChange',
         value: function onItemChange(e) {
             var _props = this.props,
@@ -25104,9 +25006,7 @@ var TodoItem = function (_Component) {
         value: function render() {
             var item = this.props.item;
 
-            var info = this._name + ' render';
-            console.log(info);
-            _replay2.default.add(this, info);
+            _get(TodoItem.prototype.__proto__ || Object.getPrototypeOf(TodoItem.prototype), 'render', this).call(this);
             return _react2.default.createElement(
                 'li',
                 { ref: 'dom' },
@@ -25130,7 +25030,7 @@ var TodoItem = function (_Component) {
     }]);
 
     return TodoItem;
-}(_react.Component);
+}(_Trackable3.default);
 
 exports.default = TodoItem;
 
@@ -25147,6 +25047,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _react = __webpack_require__(25);
 
 var _react2 = _interopRequireDefault(_react);
@@ -25155,7 +25057,80 @@ var _TodoItem = __webpack_require__(226);
 
 var _TodoItem2 = _interopRequireDefault(_TodoItem);
 
-var _replay = __webpack_require__(228);
+var _Trackable2 = __webpack_require__(229);
+
+var _Trackable3 = _interopRequireDefault(_Trackable2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TodoList = function (_Trackable) {
+    _inherits(TodoList, _Trackable);
+
+    function TodoList(props) {
+        _classCallCheck(this, TodoList);
+
+        return _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props, 'TodoList'));
+    }
+
+    _createClass(TodoList, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                items = _props.items,
+                toggleTodo = _props.toggleTodo,
+                deleteTodo = _props.deleteTodo;
+
+            _get(TodoList.prototype.__proto__ || Object.getPrototypeOf(TodoList.prototype), 'render', this).call(this);
+            return items && items.length ? _react2.default.createElement(
+                'ul',
+                { ref: 'dom' },
+                items.map(function (item) {
+                    return _react2.default.createElement(_TodoItem2.default, {
+                        key: item.id,
+                        index: item.id,
+                        item: item,
+                        toggleTodo: toggleTodo,
+                        deleteTodo: deleteTodo
+                    });
+                })
+            ) : _react2.default.createElement(
+                'div',
+                null,
+                ' Empty List '
+            );
+        }
+    }]);
+
+    return TodoList;
+}(_Trackable3.default);
+
+exports.default = TodoList;
+
+/***/ }),
+/* 228 */,
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(25);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _replay = __webpack_require__(230);
 
 var _replay2 = _interopRequireDefault(_replay);
 
@@ -25167,22 +25142,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TodoList = function (_Component) {
-    _inherits(TodoList, _Component);
+var Trackable = function (_Component) {
+    _inherits(Trackable, _Component);
 
-    function TodoList(props) {
-        _classCallCheck(this, TodoList);
+    function Trackable(props, _name) {
+        _classCallCheck(this, Trackable);
 
-        var _this = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Trackable.__proto__ || Object.getPrototypeOf(Trackable)).call(this, props));
 
-        _this._name = 'TodoList';
+        _this._name = _name;
+        if (_this._name === void 0) {
+            console.error('this._name is undefined');
+            _this._name = 'undefined-name';
+        }
         var info = _this._name + ' constructor';
         console.log(info);
         _replay2.default.add(_this, info);
         return _this;
     }
 
-    _createClass(TodoList, [{
+    _createClass(Trackable, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
             var info = this._name + ' componentWillMount';
@@ -25235,41 +25214,19 @@ var TodoList = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _props = this.props,
-                items = _props.items,
-                toggleTodo = _props.toggleTodo,
-                deleteTodo = _props.deleteTodo;
-
             var info = this._name + ' render';
             console.log(info);
             _replay2.default.add(this, info);
-            return items && items.length ? _react2.default.createElement(
-                'ul',
-                { ref: 'dom' },
-                items.map(function (item) {
-                    return _react2.default.createElement(_TodoItem2.default, {
-                        key: item.id,
-                        index: item.id,
-                        item: item,
-                        toggleTodo: toggleTodo,
-                        deleteTodo: deleteTodo
-                    });
-                })
-            ) : _react2.default.createElement(
-                'div',
-                null,
-                ' Empty List '
-            );
         }
     }]);
 
-    return TodoList;
+    return Trackable;
 }(_react.Component);
 
-exports.default = TodoList;
+exports.default = Trackable;
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
