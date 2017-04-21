@@ -4,6 +4,8 @@
   "description": "hugeapp-ares",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
+    "dev": "webpack -w",
     "test": "npm run test"
   },
   "repository": {
