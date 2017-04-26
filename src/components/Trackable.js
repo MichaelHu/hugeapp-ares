@@ -27,26 +27,26 @@ class Trackable extends Component {
         replay.add( this, info );
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps( nextProps ) {
         let info = this._name + ' componentWillReceiveProps' ;
         console.log( info );
         replay.add( this, info );
     }
 
-    shouldComponentUpdate() {
+    shouldComponentUpdate( nextProps, nextState ) {
         let info = this._name + ' shouldComponentUpdate' ;
         console.log( info );
         replay.add( this, info );
         return true;
     }
 
-    componentWillUpdate() {
+    componentWillUpdate( nextProps, nextState ) {
         let info = this._name + ' componentWillUpdate' ;
         console.log( info );
         replay.add( this, info );
     }
 
-    componentDidUpdate() {
+    componentDidUpdate( prevProps, prevState ) {
         let info = this._name + ' componentDidUpdate' ;
         console.log( info );
         replay.add( this, info );

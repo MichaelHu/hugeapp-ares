@@ -24,6 +24,22 @@ class TodoItem extends Trackable {
         deleteTodo( index );
     }
 
+    onItemOver( e ) {
+        let { item, switchCurrentTodo, index } = this.props;
+        let info = `${this._name} switchCurrentTodo ${item.content}`;
+        console.log( info );
+        replay.add( this, info );
+        switchCurrentTodo( index, item.content );
+    }
+
+    onItemOut( e ) {
+        let { item, switchCurrentTodo, index } = this.props;
+        let info = `${this._name} switchCurrentTodo null`;
+        console.log( info );
+        replay.add( this, info );
+        switchCurrentTodo( index, null);
+    }
+
     render() {
         let { item } = this.props;
         super.render();
@@ -32,7 +48,10 @@ class TodoItem extends Trackable {
                 <input type="checkbox" 
                     value={item.completed}
                     onChange={this.onItemChange.bind( this )}/>
-                &nbsp; <span>{item.content}</span>
+                &nbsp; <span
+                    onMouseOver={this.onItemOver.bind( this )}
+                    onMouseOut={this.onItemOut.bind( this )}
+                >{item.content}</span>
                 &nbsp; <button onClick={this.onButtonClick.bind( this )}>delete</button>
             </li>
         );

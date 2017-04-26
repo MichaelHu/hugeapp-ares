@@ -19,3 +19,11 @@ export function toggleTodo( id ) {
         , id: id
     };
 }
+
+export function switchCurrentTodo( id, content ) {
+    return {
+        type: 'TODO_SWITCH_CURRENT'
+        , id: id
+        , content: content
+    };
+}

@@ -1,4 +1,5 @@
 var queue = [];
+var startTime = Date.now();
 var id = 1;
 var last, cur;
 var popupTipDom;
@@ -7,6 +8,7 @@ function add( inst, info ) {
     if ( inst ) {
         queue.push( {
             id: id++
+            , ts: Date.now()
             , inst: inst
             , info: info
         } );
@@ -28,10 +30,12 @@ function play() {
         }
         return;
     }
-    let { inst, id, info } = queue.shift();
+    let { inst, id, info, ts } = queue.shift();
     let st;
+    let elapsedTime = ( ( ts - startTime ) / 1000 ).toFixed( 3 ); 
+    let formatInfo = `[ ${id} ( ${elapsedTime}s ) ] ${info}`;
     if ( inst && inst.refs.dom ) {
-        console.log( `replay: [ ${id} ] ${info}` );
+        console.log( `replay: ${formatInfo}` );
         cur = inst.refs.dom;
         st = window.getComputedStyle( cur );
         if ( last ) {
@@ -41,12 +45,12 @@ function play() {
         last = {
             dom: cur 
             , savedStyle: st[ 'border' ]
-            , removeTip: appendTip( cur, `[ ${id} ] ${info}` )
+            , removeTip: appendTip( cur, formatInfo )
         };
         cur.style.border = '1px solid red';
     }
     else {
-        popupTip( info );
+        popupTip( formatInfo );
     }
 }
 
@@ -89,7 +93,7 @@ function popupTip( info ) {
     last = null;
 
     tipDom.style.display = 'block';
-    tipDom.innerHTML = `[ ${id} ] ${info}`;
+    tipDom.innerHTML = info;
     document.body.appendChild( tipDom );
     tipDom.style.position = 'absolute';
     tipDom.style.top = '50%';

@@ -9,23 +9,24 @@ class TodoList extends Trackable {
     }
 
     render() {
-        let { items, toggleTodo, deleteTodo } = this.props;
+        let { items, toggleTodo, deleteTodo, switchCurrentTodo } = this.props;
         super.render();
         return (
             ( items && items.length ) 
                 ? (
                     <ul ref="dom">
-                        {
-                            items.map( ( item ) => {
-                                return <TodoItem 
-                                    key={item.id} 
-                                    index={item.id} 
-                                    item={item} 
-                                    toggleTodo={toggleTodo}
-                                    deleteTodo={deleteTodo}
-                                />;
-                            } )
-                        }
+                    {
+                        items.map( ( item ) => {
+                            return <TodoItem 
+                                key={item.id} 
+                                index={item.id} 
+                                item={item} 
+                                toggleTodo={toggleTodo}
+                                deleteTodo={deleteTodo}
+                                switchCurrentTodo={switchCurrentTodo}
+                            />;
+                        } )
+                    }
                     </ul>
                 )
                 : (

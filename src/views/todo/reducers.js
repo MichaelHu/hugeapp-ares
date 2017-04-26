@@ -35,8 +35,21 @@ function todos( state = [], action ) {
     }
 }
 
+function cur_todo( state = {}, action ) {
+    switch( action.type ) {
+        case 'TODO_SWITCH_CURRENT':
+            return {
+                id: action.id
+                , content: action.content
+            };
+        default:
+            return state;
+    }
+}
+
 const todoapp = combineReducers( {
     todos
+    , cur_todo
 } );
 
 export default todoapp;

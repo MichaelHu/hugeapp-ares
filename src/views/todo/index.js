@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, toggleTodo, deleteTodo } from './actions';
+import { addTodo, toggleTodo, deleteTodo, switchCurrentTodo } from './actions';
 import TodoList from './components/TodoList'; 
 import TodoItem from './components/TodoItem';
+import TodoBlackboard from './components/TodoBlackboard';
+import TodoRelatedInfo from './components/TodoRelatedInfo';
 import Trackable from '../../components/Trackable';
 import replay from '../../utils/replay';
 
@@ -43,7 +45,7 @@ class TodoView extends Trackable {
     }
 
     render() {
-        let { todos, toggleTodo, deleteTodo } = this.props;
+        let { todos, cur_todo, toggleTodo, deleteTodo, switchCurrentTodo } = this.props;
         super.render();
         return (
             <div ref="dom">
@@ -54,10 +56,23 @@ class TodoView extends Trackable {
                 <input type="button" value="OK" onClick={this.onClick.bind( this )}/>
                 {
                     todos.length
-                    ? <TodoList items={todos} 
-                        toggleTodo={toggleTodo} 
-                        deleteTodo={deleteTodo}
-                        />
+                    ? (
+                        <div>
+                            <TodoList items={todos} 
+                                toggleTodo={toggleTodo} 
+                                deleteTodo={deleteTodo}
+                                switchCurrentTodo={switchCurrentTodo}
+                            />
+
+                            <TodoRelatedInfo title={cur_todo.content}/>
+
+                            <TodoBlackboard items={todos} 
+                                toggleTodo={toggleTodo} 
+                                deleteTodo={deleteTodo}
+                            />
+                        </div>
+                    )
+                        
                     : <div>无待办事项</div>
                 }
             </div>
@@ -68,6 +83,7 @@ class TodoView extends Trackable {
 const mapStateToProps = ( state ) => {
     return {
         todos: state.todoapp.todos
+        , cur_todo: state.todoapp.cur_todo
     };
 };
 
@@ -81,6 +97,9 @@ const mapDispatchToProps = ( dispatch ) => {
         }
         , deleteTodo: ( index ) => {
             dispatch( deleteTodo( index ) );
+        }
+        , switchCurrentTodo: ( index, content ) => {
+            dispatch( switchCurrentTodo( index, content ) );
         }
     };
 };
