@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, toggleTodo, deleteTodo, switchCurrentTodo } from './actions';
+import { addTodo, toggleTodo, deleteTodo, switchCurrentTodo } from './modules/actions';
 import TodoList from './components/TodoList'; 
 import TodoItem from './components/TodoItem';
 import TodoBlackboard from './components/TodoBlackboard';
@@ -59,6 +59,7 @@ class TodoView extends Trackable {
                     ? (
                         <div>
                             <TodoList items={todos} 
+                                curTodo={cur_todo}
                                 toggleTodo={toggleTodo} 
                                 deleteTodo={deleteTodo}
                                 switchCurrentTodo={switchCurrentTodo}

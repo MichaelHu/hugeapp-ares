@@ -16,7 +16,7 @@ class TodoItem extends Trackable {
         toggleTodo( index );
     }
 
-    onButtonClick( e ) {
+    onDeleteButtonClick( e ) {
         let { item, deleteTodo, index } = this.props;
         let info = `${this._name} deleteTodo ${item.content}`;
         console.log( info );
@@ -24,7 +24,7 @@ class TodoItem extends Trackable {
         deleteTodo( index );
     }
 
-    onItemOver( e ) {
+    onViewButtonClick( e ) {
         let { item, switchCurrentTodo, index } = this.props;
         let info = `${this._name} switchCurrentTodo ${item.content}`;
         console.log( info );
@@ -32,27 +32,20 @@ class TodoItem extends Trackable {
         switchCurrentTodo( index, item.content );
     }
 
-    onItemOut( e ) {
-        let { item, switchCurrentTodo, index } = this.props;
-        let info = `${this._name} switchCurrentTodo null`;
-        console.log( info );
-        replay.add( this, info );
-        switchCurrentTodo( index, null);
-    }
-
     render() {
-        let { item } = this.props;
+        let { item, isCurItem } = this.props;
         super.render();
         return (
             <li ref="dom">
                 <input type="checkbox" 
                     value={item.completed}
                     onChange={this.onItemChange.bind( this )}/>
-                &nbsp; <span
-                    onMouseOver={this.onItemOver.bind( this )}
-                    onMouseOut={this.onItemOut.bind( this )}
-                >{item.content}</span>
-                &nbsp; <button onClick={this.onButtonClick.bind( this )}>delete</button>
+                &nbsp; 
+                <span style={{color: isCurItem ? '#f00' : '#000'}}>{item.content}</span>
+                &nbsp; 
+                <button onClick={this.onViewButtonClick.bind( this )}>view</button>
+                &nbsp; 
+                <button onClick={this.onDeleteButtonClick.bind( this )}>del</button>
             </li>
         );
     }

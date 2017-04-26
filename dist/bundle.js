@@ -11425,8 +11425,8 @@ var TodoItem = function (_Trackable) {
             toggleTodo(index);
         }
     }, {
-        key: 'onButtonClick',
-        value: function onButtonClick(e) {
+        key: 'onDeleteButtonClick',
+        value: function onDeleteButtonClick(e) {
             var _props2 = this.props,
                 item = _props2.item,
                 deleteTodo = _props2.deleteTodo,
@@ -11438,8 +11438,8 @@ var TodoItem = function (_Trackable) {
             deleteTodo(index);
         }
     }, {
-        key: 'onItemOver',
-        value: function onItemOver(e) {
+        key: 'onViewButtonClick',
+        value: function onViewButtonClick(e) {
             var _props3 = this.props,
                 item = _props3.item,
                 switchCurrentTodo = _props3.switchCurrentTodo,
@@ -11451,22 +11451,11 @@ var TodoItem = function (_Trackable) {
             switchCurrentTodo(index, item.content);
         }
     }, {
-        key: 'onItemOut',
-        value: function onItemOut(e) {
-            var _props4 = this.props,
-                item = _props4.item,
-                switchCurrentTodo = _props4.switchCurrentTodo,
-                index = _props4.index;
-
-            var info = this._name + ' switchCurrentTodo null';
-            console.log(info);
-            _replay2.default.add(this, info);
-            switchCurrentTodo(index, null);
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var item = this.props.item;
+            var _props4 = this.props,
+                item = _props4.item,
+                isCurItem = _props4.isCurItem;
 
             _get(TodoItem.prototype.__proto__ || Object.getPrototypeOf(TodoItem.prototype), 'render', this).call(this);
             return _react2.default.createElement(
@@ -11475,20 +11464,23 @@ var TodoItem = function (_Trackable) {
                 _react2.default.createElement('input', { type: 'checkbox',
                     value: item.completed,
                     onChange: this.onItemChange.bind(this) }),
-                '\xA0 ',
+                '\xA0',
                 _react2.default.createElement(
                     'span',
-                    {
-                        onMouseOver: this.onItemOver.bind(this),
-                        onMouseOut: this.onItemOut.bind(this)
-                    },
+                    { style: { color: isCurItem ? '#f00' : '#000' } },
                     item.content
                 ),
-                '\xA0 ',
+                '\xA0',
                 _react2.default.createElement(
                     'button',
-                    { onClick: this.onButtonClick.bind(this) },
-                    'delete'
+                    { onClick: this.onViewButtonClick.bind(this) },
+                    'view'
+                ),
+                '\xA0',
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.onDeleteButtonClick.bind(this) },
+                    'del'
                 )
             );
         }
@@ -11529,7 +11521,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(56);
 
-var _actions = __webpack_require__(228);
+var _actions = __webpack_require__(232);
 
 var _TodoList = __webpack_require__(229);
 
@@ -11633,6 +11625,7 @@ var TodoView = function (_Trackable) {
                     'div',
                     null,
                     _react2.default.createElement(_TodoList2.default, { items: todos,
+                        curTodo: cur_todo,
                         toggleTodo: toggleTodo,
                         deleteTodo: deleteTodo,
                         switchCurrentTodo: switchCurrentTodo
@@ -11683,76 +11676,7 @@ var TodoViewContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToP
 exports.default = TodoViewContainer;
 
 /***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _redux = __webpack_require__(34);
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function todos() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var action = arguments[1];
-
-    switch (action.type) {
-        case 'TODO_ADD':
-            return [].concat(_toConsumableArray(state), [{
-                content: action.content,
-                id: action.id,
-                completed: false
-            }]);
-        case 'TODO_TOGGLE':
-            return state.map(function (item, index) {
-                var newItem = void 0;
-                if (item.id === action.id) {
-                    newItem = Object.assign({}, item, { completed: !item.completed });
-                }
-                return item;
-            });
-        case 'TODO_DELETE':
-            var _newState = [];
-            for (var i = 0; i < state.length; i++) {
-                if (state[i].id != action.id) {
-                    _newState.push(state[i]);
-                }
-            }
-            return _newState;
-
-        default:
-            return state;
-    }
-}
-
-function cur_todo() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var action = arguments[1];
-
-    switch (action.type) {
-        case 'TODO_SWITCH_CURRENT':
-            return {
-                id: action.id,
-                content: action.content
-            };
-        default:
-            return state;
-    }
-}
-
-var todoapp = (0, _redux.combineReducers)({
-    todos: todos,
-    cur_todo: cur_todo
-});
-
-exports.default = todoapp;
-
-/***/ }),
+/* 101 */,
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25304,7 +25228,7 @@ var _todo = __webpack_require__(100);
 
 var _todo2 = _interopRequireDefault(_todo);
 
-var _reducers = __webpack_require__(101);
+var _reducers = __webpack_require__(233);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -25317,60 +25241,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var topReducer = (0, _redux.combineReducers)({ todoapp: _reducers2.default });
 var store = (0, _redux.createStore)(topReducer);
 
-// ReactDOM.render( <Todo />, document.getElementById( 'root' ) );
 _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
     _react2.default.createElement(_todo2.default, null)
 ), document.getElementById('root'));
 
-_replay2.default.start(1500);
+_replay2.default.start(500);
 
 /***/ }),
-/* 228 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.addTodo = addTodo;
-exports.deleteTodo = deleteTodo;
-exports.toggleTodo = toggleTodo;
-exports.switchCurrentTodo = switchCurrentTodo;
-function addTodo(content) {
-    return {
-        type: 'TODO_ADD',
-        content: content,
-        id: Date.now()
-    };
-}
-
-function deleteTodo(id) {
-    return {
-        type: 'TODO_DELETE',
-        id: id
-    };
-}
-
-function toggleTodo(id) {
-    return {
-        type: 'TODO_TOGGLE',
-        id: id
-    };
-}
-
-function switchCurrentTodo(id, content) {
-    return {
-        type: 'TODO_SWITCH_CURRENT',
-        id: id,
-        content: content
-    };
-}
-
-/***/ }),
+/* 228 */,
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25419,19 +25299,21 @@ var TodoList = function (_Trackable) {
         value: function render() {
             var _props = this.props,
                 items = _props.items,
+                curTodo = _props.curTodo,
                 toggleTodo = _props.toggleTodo,
                 deleteTodo = _props.deleteTodo,
                 switchCurrentTodo = _props.switchCurrentTodo;
 
             _get(TodoList.prototype.__proto__ || Object.getPrototypeOf(TodoList.prototype), 'render', this).call(this);
             return items && items.length ? _react2.default.createElement(
-                'ul',
+                'ol',
                 { ref: 'dom' },
                 items.map(function (item) {
                     return _react2.default.createElement(_TodoItem2.default, {
                         key: item.id,
                         index: item.id,
                         item: item,
+                        isCurItem: curTodo.id == item.id ? true : false,
                         toggleTodo: toggleTodo,
                         deleteTodo: deleteTodo,
                         switchCurrentTodo: switchCurrentTodo
@@ -25671,6 +25553,120 @@ var TodoRelatedInfo = function (_Trackable) {
 }(_Trackable3.default);
 
 exports.default = TodoRelatedInfo;
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.addTodo = addTodo;
+exports.deleteTodo = deleteTodo;
+exports.toggleTodo = toggleTodo;
+exports.switchCurrentTodo = switchCurrentTodo;
+function addTodo(content) {
+    return {
+        type: 'TODO_ADD',
+        content: content,
+        id: Date.now()
+    };
+}
+
+function deleteTodo(id) {
+    return {
+        type: 'TODO_DELETE',
+        id: id
+    };
+}
+
+function toggleTodo(id) {
+    return {
+        type: 'TODO_TOGGLE',
+        id: id
+    };
+}
+
+function switchCurrentTodo(id, content) {
+    return {
+        type: 'TODO_SWITCH_CURRENT',
+        id: id,
+        content: content
+    };
+}
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(34);
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function todos() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'TODO_ADD':
+            return [].concat(_toConsumableArray(state), [{
+                content: action.content,
+                id: action.id,
+                completed: false
+            }]);
+        case 'TODO_TOGGLE':
+            return state.map(function (item, index) {
+                var newItem = void 0;
+                if (item.id === action.id) {
+                    newItem = Object.assign({}, item, { completed: !item.completed });
+                }
+                return item;
+            });
+        case 'TODO_DELETE':
+            var _newState = [];
+            for (var i = 0; i < state.length; i++) {
+                if (state[i].id != action.id) {
+                    _newState.push(state[i]);
+                }
+            }
+            return _newState;
+
+        default:
+            return state;
+    }
+}
+
+function cur_todo() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'TODO_SWITCH_CURRENT':
+            return {
+                id: action.id,
+                content: action.content
+            };
+        default:
+            return state;
+    }
+}
+
+var todoapp = (0, _redux.combineReducers)({
+    todos: todos,
+    cur_todo: cur_todo
+});
+
+exports.default = todoapp;
 
 /***/ })
 /******/ ]);
