@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TodoItem from './TodoItem';
-import Trackable from '../../../components/Trackable';
+import Trackable from '../../../components/trackable';
 
 class TodoList extends Trackable {
 

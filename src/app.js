@@ -4,7 +4,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import Todo from './views/todo';
 import todoapp from './views/todo/modules/reducers';
-import replay from './utils/replay';
+import Trackable from './components/trackable';
 
 let topReducer = combineReducers( { todoapp } );
 let store = createStore( topReducer );
@@ -16,4 +16,4 @@ ReactDOM.render(
     , document.getElementById( 'root' ) 
 );
 
-replay.start( 500 );
+Trackable.replay.start( 500 );

@@ -5,8 +5,9 @@ import TodoList from './components/TodoList';
 import TodoItem from './components/TodoItem';
 import TodoBlackboard from './components/TodoBlackboard';
 import TodoRelatedInfo from './components/TodoRelatedInfo';
-import Trackable from '../../components/Trackable';
-import replay from '../../utils/replay';
+import Trackable from '../../components/trackable';
+
+let replay = Trackable.replay;
 
 class TodoView extends Trackable {
     constructor( props ) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Trackable from '../../../components/Trackable';
+import Trackable from '../../../components/trackable';
 
 class TodoRelatedInfo extends Trackable {
 

@@ -3466,152 +3466,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 module.exports = SyntheticUIEvent;
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var queue = [];
-var startTime = Date.now();
-var id = 1;
-var last, cur;
-var popupTipDom;
-
-function add(inst, info) {
-    if (inst) {
-        queue.push({
-            id: id++,
-            ts: Date.now(),
-            inst: inst,
-            info: info
-        });
-    }
-}
-
-function start(interval) {
-    setInterval(function () {
-        play();
-    }, interval || 1000);
-}
-
-function play() {
-    if (!queue.length) {
-        if (last) {
-            last.dom.style.border = last.savedStyle;
-            last.removeTip();
-            last = null;
-        }
-        return;
-    }
-
-    var _queue$shift = queue.shift(),
-        inst = _queue$shift.inst,
-        id = _queue$shift.id,
-        info = _queue$shift.info,
-        ts = _queue$shift.ts;
-
-    var st = void 0;
-    var elapsedTime = ((ts - startTime) / 1000).toFixed(3);
-    var formatInfo = '[ ' + id + ' ( ' + elapsedTime + 's ) ] ' + info;
-    if (inst && inst.refs.dom) {
-        console.log('replay: ' + formatInfo);
-        cur = inst.refs.dom;
-        st = window.getComputedStyle(cur);
-        if (last) {
-            last.dom.style.border = last.savedStyle;
-            last.removeTip();
-        }
-        last = {
-            dom: cur,
-            savedStyle: st['border'],
-            removeTip: appendTip(cur, formatInfo)
-        };
-        cur.style.border = '1px solid red';
-    } else {
-        popupTip(formatInfo);
-    }
-}
-
-function appendTip(dom, info) {
-    var st = window.getComputedStyle(dom);
-    var positionStyle = st['position'];
-    if (positionStyle != 'relative' && positionStyle != 'absolute') {
-        dom.style.position = 'relative';
-    }
-    var tipDom = document.createElement('div');
-    tipDom.innerHTML = info;
-    dom.appendChild(tipDom);
-    tipDom.style.position = 'absolute';
-    tipDom.style.top = '0';
-    tipDom.style.right = '0';
-    tipDom.style.width = '50%';
-    tipDom.style.paddingLeft = '5px';
-    tipDom.style.paddingRight = '5px';
-    tipDom.style.backgroundColor = '#eee';
-    tipDom.style.textAlign = 'left';
-    tipDom.style.fontSize = '16px';
-    tipDom.style.color = '#00f';
-    return function () {
-        dom.style.position = positionStyle;
-        dom.removeChild(tipDom);
-    };
-}
-
-function popupTip(info) {
-    var tipDom = popupTipDom = popupTipDom || document.createElement('div');
-
-    if (last) {
-        last.dom.style.border = last.savedStyle;
-        last.removeTip();
-    }
-    last = null;
-
-    tipDom.style.display = 'block';
-    tipDom.innerHTML = info;
-    document.body.appendChild(tipDom);
-    tipDom.style.position = 'absolute';
-    tipDom.style.top = '50%';
-    tipDom.style.left = '50%';
-    tipDom.style.width = '500px';
-    tipDom.style.marginLeft = '-250px';
-    tipDom.style.paddingLeft = '5px';
-    tipDom.style.paddingRight = '5px';
-    tipDom.style.backgroundColor = '#eee';
-    tipDom.style.border = '1px solid red';
-    tipDom.style.textAlign = 'center';
-    tipDom.style.fontSize = '16px';
-    tipDom.style.color = '#00f';
-
-    setTimeout(function () {
-        tipDom.style.display = 'none';
-    }, 1000);
-}
-
-function flush() {
-    queue.length = 0;
-    if (last) {
-        last.dom.style.border = last.savedStyle;
-        last.removeTip();
-        last = null;
-    }
-}
-
-document.addEventListener('keydown', function (e) {
-    if (e.altKey && e.keyCode == 27) {
-        flush();
-    }
-}, false);
-
-exports.default = {
-    add: add,
-    start: start
-};
-
-/***/ }),
+/* 26 */,
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7002,118 +6857,7 @@ module.exports = ReactNoopUpdateQueue;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(14);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _replay = __webpack_require__(26);
-
-var _replay2 = _interopRequireDefault(_replay);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Trackable = function (_Component) {
-    _inherits(Trackable, _Component);
-
-    function Trackable(props, _name) {
-        _classCallCheck(this, Trackable);
-
-        var _this = _possibleConstructorReturn(this, (Trackable.__proto__ || Object.getPrototypeOf(Trackable)).call(this, props));
-
-        _this._name = _name;
-        if (_this._name === void 0) {
-            console.error('this._name is undefined');
-            _this._name = 'undefined-name';
-        }
-        var info = _this._name + ' constructor';
-        console.log(info);
-        _replay2.default.add(_this, info);
-        return _this;
-    }
-
-    _createClass(Trackable, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var info = this._name + ' componentWillMount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var info = this._name + ' componentDidMount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var info = this._name + ' componentWillReceiveProps';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'shouldComponentUpdate',
-        value: function shouldComponentUpdate(nextProps, nextState) {
-            var info = this._name + ' shouldComponentUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-            return true;
-        }
-    }, {
-        key: 'componentWillUpdate',
-        value: function componentWillUpdate(nextProps, nextState) {
-            var info = this._name + ' componentWillUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var info = this._name + ' componentDidUpdate';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            var info = this._name + ' componentWillUnmount';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var info = this._name + ' render';
-            console.log(info);
-            _replay2.default.add(this, info);
-        }
-    }]);
-
-    return Trackable;
-}(_react.Component);
-
-exports.default = Trackable;
-
-/***/ }),
+/* 55 */,
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11386,13 +11130,9 @@ var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Trackable2 = __webpack_require__(55);
+var _trackable = __webpack_require__(235);
 
-var _Trackable3 = _interopRequireDefault(_Trackable2);
-
-var _replay = __webpack_require__(26);
-
-var _replay2 = _interopRequireDefault(_replay);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11401,6 +11141,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var replay = _trackable2.default.replay;
 
 var TodoItem = function (_Trackable) {
     _inherits(TodoItem, _Trackable);
@@ -11421,7 +11163,7 @@ var TodoItem = function (_Trackable) {
 
             var info = this._name + ' toggleTodo ' + item.content;
             console.log(info);
-            _replay2.default.add(this, info);
+            replay.add(this, info);
             toggleTodo(index);
         }
     }, {
@@ -11434,7 +11176,7 @@ var TodoItem = function (_Trackable) {
 
             var info = this._name + ' deleteTodo ' + item.content;
             console.log(info);
-            _replay2.default.add(this, info);
+            replay.add(this, info);
             deleteTodo(index);
         }
     }, {
@@ -11447,7 +11189,7 @@ var TodoItem = function (_Trackable) {
 
             var info = this._name + ' switchCurrentTodo ' + item.content;
             console.log(info);
-            _replay2.default.add(this, info);
+            replay.add(this, info);
             switchCurrentTodo(index, item.content);
         }
     }, {
@@ -11487,7 +11229,7 @@ var TodoItem = function (_Trackable) {
     }]);
 
     return TodoItem;
-}(_Trackable3.default);
+}(_trackable2.default);
 
 exports.default = TodoItem;
 
@@ -11539,13 +11281,9 @@ var _TodoRelatedInfo = __webpack_require__(231);
 
 var _TodoRelatedInfo2 = _interopRequireDefault(_TodoRelatedInfo);
 
-var _Trackable2 = __webpack_require__(55);
+var _trackable = __webpack_require__(235);
 
-var _Trackable3 = _interopRequireDefault(_Trackable2);
-
-var _replay = __webpack_require__(26);
-
-var _replay2 = _interopRequireDefault(_replay);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11554,6 +11292,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var replay = _trackable2.default.replay;
 
 var TodoView = function (_Trackable) {
     _inherits(TodoView, _Trackable);
@@ -11573,7 +11313,7 @@ var TodoView = function (_Trackable) {
             setTimeout(function () {
                 var info = _this2._name + ' data ready';
                 console.log(info);
-                _replay2.default.add(_this2, info);
+                replay.add(_this2, info);
             }, 1000);
         }
     }, {
@@ -11599,7 +11339,7 @@ var TodoView = function (_Trackable) {
                 this.refs.todo_text.value = '';
                 var info = this._name + ' addTodo ' + text;
                 console.log(info);
-                _replay2.default.add(this, info);
+                replay.add(this, info);
             }
         }
     }, {
@@ -11645,7 +11385,7 @@ var TodoView = function (_Trackable) {
     }]);
 
     return TodoView;
-}(_Trackable3.default);
+}(_trackable2.default);
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
@@ -25232,9 +24972,9 @@ var _reducers = __webpack_require__(233);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-var _replay = __webpack_require__(26);
+var _trackable = __webpack_require__(235);
 
-var _replay2 = _interopRequireDefault(_replay);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25247,7 +24987,7 @@ _reactDom2.default.render(_react2.default.createElement(
     _react2.default.createElement(_todo2.default, null)
 ), document.getElementById('root'));
 
-_replay2.default.start(500);
+_trackable2.default.replay.start(500);
 
 /***/ }),
 /* 228 */,
@@ -25273,9 +25013,9 @@ var _TodoItem = __webpack_require__(98);
 
 var _TodoItem2 = _interopRequireDefault(_TodoItem);
 
-var _Trackable2 = __webpack_require__(55);
+var _trackable = __webpack_require__(235);
 
-var _Trackable3 = _interopRequireDefault(_Trackable2);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25328,7 +25068,7 @@ var TodoList = function (_Trackable) {
     }]);
 
     return TodoList;
-}(_Trackable3.default);
+}(_trackable2.default);
 
 exports.default = TodoList;
 
@@ -25351,9 +25091,9 @@ var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Trackable2 = __webpack_require__(55);
+var _trackable = __webpack_require__(235);
 
-var _Trackable3 = _interopRequireDefault(_Trackable2);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25448,7 +25188,7 @@ var TodoBlackboard = function (_Trackable) {
     }]);
 
     return TodoBlackboard;
-}(_Trackable3.default);
+}(_trackable2.default);
 
 exports.default = TodoBlackboard;
 
@@ -25471,9 +25211,9 @@ var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Trackable2 = __webpack_require__(55);
+var _trackable = __webpack_require__(235);
 
-var _Trackable3 = _interopRequireDefault(_Trackable2);
+var _trackable2 = _interopRequireDefault(_trackable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25550,7 +25290,7 @@ var TodoRelatedInfo = function (_Trackable) {
     }]);
 
     return TodoRelatedInfo;
-}(_Trackable3.default);
+}(_trackable2.default);
 
 exports.default = TodoRelatedInfo;
 
@@ -25667,6 +25407,289 @@ var todoapp = (0, _redux.combineReducers)({
 });
 
 exports.default = todoapp;
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var queue = [];
+var startTime = Date.now();
+var id = 1;
+var last, cur;
+var popupTipDom;
+
+function add(inst, info) {
+    if (inst) {
+        queue.push({
+            id: id++,
+            ts: Date.now(),
+            inst: inst,
+            info: info
+        });
+    }
+}
+
+function start(interval) {
+    setInterval(function () {
+        play();
+    }, interval || 1000);
+}
+
+function play() {
+    if (!queue.length) {
+        if (last) {
+            last.dom.style.border = last.savedStyle;
+            last.removeTip();
+            last = null;
+        }
+        return;
+    }
+
+    var _queue$shift = queue.shift(),
+        inst = _queue$shift.inst,
+        id = _queue$shift.id,
+        info = _queue$shift.info,
+        ts = _queue$shift.ts;
+
+    var st = void 0;
+    var elapsedTime = ((ts - startTime) / 1000).toFixed(3);
+    var formatInfo = '[ ' + id + ' ( ' + elapsedTime + 's ) ] ' + info;
+    if (inst && inst.refs.dom) {
+        console.log('replay: ' + formatInfo);
+        cur = inst.refs.dom;
+        st = window.getComputedStyle(cur);
+        if (last) {
+            last.dom.style.border = last.savedStyle;
+            last.removeTip();
+        }
+        last = {
+            dom: cur,
+            savedStyle: st['border'],
+            removeTip: appendTip(cur, formatInfo)
+        };
+        cur.style.border = '1px solid red';
+    } else {
+        popupTip(formatInfo);
+    }
+}
+
+function appendTip(dom, info) {
+    var st = window.getComputedStyle(dom);
+    var positionStyle = st['position'];
+    if (positionStyle != 'relative' && positionStyle != 'absolute') {
+        dom.style.position = 'relative';
+    }
+    var tipDom = document.createElement('div');
+    tipDom.innerHTML = info;
+    dom.appendChild(tipDom);
+    tipDom.style.position = 'absolute';
+    tipDom.style.top = '0';
+    tipDom.style.right = '0';
+    tipDom.style.width = '50%';
+    tipDom.style.paddingLeft = '5px';
+    tipDom.style.paddingRight = '5px';
+    tipDom.style.backgroundColor = '#eee';
+    tipDom.style.textAlign = 'left';
+    tipDom.style.fontSize = '16px';
+    tipDom.style.color = '#00f';
+    return function () {
+        dom.style.position = positionStyle;
+        dom.removeChild(tipDom);
+    };
+}
+
+function popupTip(info) {
+    var tipDom = popupTipDom = popupTipDom || document.createElement('div');
+
+    if (last) {
+        last.dom.style.border = last.savedStyle;
+        last.removeTip();
+    }
+    last = null;
+
+    tipDom.style.display = 'block';
+    tipDom.innerHTML = info;
+    document.body.appendChild(tipDom);
+    tipDom.style.position = 'absolute';
+    tipDom.style.top = '50%';
+    tipDom.style.left = '50%';
+    tipDom.style.width = '500px';
+    tipDom.style.marginLeft = '-250px';
+    tipDom.style.paddingLeft = '5px';
+    tipDom.style.paddingRight = '5px';
+    tipDom.style.backgroundColor = '#eee';
+    tipDom.style.border = '1px solid red';
+    tipDom.style.textAlign = 'center';
+    tipDom.style.fontSize = '16px';
+    tipDom.style.color = '#00f';
+
+    setTimeout(function () {
+        tipDom.style.display = 'none';
+    }, 1000);
+}
+
+function flush() {
+    queue.length = 0;
+    if (last) {
+        last.dom.style.border = last.savedStyle;
+        last.removeTip();
+        last = null;
+    }
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.altKey && e.keyCode == 27) {
+        flush();
+    }
+}, false);
+
+exports.default = {
+    add: add,
+    start: start
+};
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _replay = __webpack_require__(234);
+
+var _replay2 = _interopRequireDefault(_replay);
+
+var _Trackable = __webpack_require__(236);
+
+var _Trackable2 = _interopRequireDefault(_Trackable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_Trackable2.default.replay = _replay2.default;
+
+exports.default = _Trackable2.default;
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(14);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _replay = __webpack_require__(234);
+
+var _replay2 = _interopRequireDefault(_replay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Trackable = function (_Component) {
+    _inherits(Trackable, _Component);
+
+    function Trackable(props, _name) {
+        _classCallCheck(this, Trackable);
+
+        var _this = _possibleConstructorReturn(this, (Trackable.__proto__ || Object.getPrototypeOf(Trackable)).call(this, props));
+
+        _this._name = _name;
+        if (_this._name === void 0) {
+            console.error('this._name is undefined');
+            _this._name = 'undefined-name';
+        }
+        var info = _this._name + ' constructor';
+        console.log(info);
+        _replay2.default.add(_this, info);
+        return _this;
+    }
+
+    _createClass(Trackable, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var info = this._name + ' componentWillMount';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var info = this._name + ' componentDidMount';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            var info = this._name + ' componentWillReceiveProps';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps, nextState) {
+            var info = this._name + ' shouldComponentUpdate';
+            console.log(info);
+            _replay2.default.add(this, info);
+            return true;
+        }
+    }, {
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate(nextProps, nextState) {
+            var info = this._name + ' componentWillUpdate';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            var info = this._name + ' componentDidUpdate';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            var info = this._name + ' componentWillUnmount';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var info = this._name + ' render';
+            console.log(info);
+            _replay2.default.add(this, info);
+        }
+    }]);
+
+    return Trackable;
+}(_react.Component);
+
+exports.default = Trackable;
 
 /***/ })
 /******/ ]);

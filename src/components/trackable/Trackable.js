@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import replay from '../utils/replay';
+import replay from './replay';
 
 class Trackable extends Component {
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Trackable from '../../../components/Trackable';
-import replay from '../../../utils/replay';
+import Trackable from '../../../components/trackable';
+
+let replay = Trackable.replay;
 
 class TodoItem extends Trackable {
 
