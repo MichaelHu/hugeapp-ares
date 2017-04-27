@@ -25473,7 +25473,7 @@ function play() {
             savedStyle: st['border'],
             removeTip: appendTip(cur, formatInfo)
         };
-        cur.style.border = '1px solid red';
+        cur.style.border = '1px dashed red';
     } else {
         popupTip(formatInfo);
     }
@@ -25496,7 +25496,7 @@ function appendTip(dom, info) {
     tipDom.style.paddingRight = '5px';
     tipDom.style.backgroundColor = '#eee';
     tipDom.style.textAlign = 'left';
-    tipDom.style.fontSize = '16px';
+    tipDom.style.fontSize = '14px';
     tipDom.style.color = '#00f';
     return function () {
         dom.style.position = positionStyle;
@@ -25517,16 +25517,17 @@ function popupTip(info) {
     tipDom.innerHTML = info;
     document.body.appendChild(tipDom);
     tipDom.style.position = 'absolute';
-    tipDom.style.top = '50%';
+    tipDom.style.top = '5px';
     tipDom.style.left = '50%';
     tipDom.style.width = '500px';
     tipDom.style.marginLeft = '-250px';
     tipDom.style.paddingLeft = '5px';
     tipDom.style.paddingRight = '5px';
     tipDom.style.backgroundColor = '#eee';
-    tipDom.style.border = '1px solid red';
+    tipDom.style.border = '1px solid #aaa';
+    tipDom.style.borderRadius = '3px';
     tipDom.style.textAlign = 'center';
-    tipDom.style.fontSize = '16px';
+    tipDom.style.fontSize = '14px';
     tipDom.style.color = '#00f';
 
     setTimeout(function () {
