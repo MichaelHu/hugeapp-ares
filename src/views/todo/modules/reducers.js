@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import Trackable from '../../../components/trackable';
 
 function todos( state = [], action ) {
     switch( action.type ) {
@@ -47,9 +48,15 @@ function cur_todo( state = {}, action ) {
     }
 }
 
+function __lastAction( state = 'NO_ACTION', action ) {
+    Trackable.replay.traceAction( action.type );
+    return state;
+}
+
 const todoapp = combineReducers( {
     todos
     , cur_todo
+    , __lastAction
 } );
 
 export default todoapp;

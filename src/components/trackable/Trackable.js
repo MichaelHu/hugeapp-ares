@@ -3,64 +3,63 @@ import replay from './replay';
 
 class Trackable extends Component {
 
-    constructor( props, _name ) {
-        super( props );
-        this._name = _name;
-        if ( this._name === void 0 ) {
-            console.error( 'this._name is undefined' );
-            this._name = 'undefined-name';
+    constructor() {
+        let [ props, _replay_name, _replay_ref ] = arguments;
+        super( ...arguments );
+        this._replay_ref = _replay_ref || null;
+        this._replay_name = _replay_name;
+        if ( this._replay_name === void 0 ) {
+            console.error( 'this._replay_name is undefined' );
+            this._replay_name = 'undefined-name';
         }
-        let info = this._name + ' constructor' ;
-        console.log( info );
+        let info = 'constructor';
         replay.add( this, info );
     }
 
+    setState() {
+        let info = 'set-state';
+        replay.add( this, info ); 
+        super.setState( ...arguments );
+    }
+
     componentWillMount() {
-        let info = this._name + ' componentWillMount' ;
-        console.log( info );
+        let info = 'will-mount';
         replay.add( this, info );
     }
 
     componentDidMount() {
-        let info = this._name + ' componentDidMount' ;
-        console.log( info );
+        let info = 'did-mount';
         replay.add( this, info );
     }
 
     componentWillReceiveProps( nextProps ) {
-        let info = this._name + ' componentWillReceiveProps' ;
-        console.log( info );
+        let info = 'will-receive';
         replay.add( this, info );
     }
 
     shouldComponentUpdate( nextProps, nextState ) {
-        let info = this._name + ' shouldComponentUpdate' ;
-        console.log( info );
+        let info = 'should-update';
         replay.add( this, info );
         return true;
     }
 
     componentWillUpdate( nextProps, nextState ) {
-        let info = this._name + ' componentWillUpdate' ;
-        console.log( info );
+        let info = 'will-update';
         replay.add( this, info );
     }
 
     componentDidUpdate( prevProps, prevState ) {
-        let info = this._name + ' componentDidUpdate' ;
-        console.log( info );
+        let info = 'did-update';
         replay.add( this, info );
     }
 
     componentWillUnmount() {
-        let info = this._name + ' componentWillUnmount' ;
-        console.log( info );
+        let info = 'will-unmount';
         replay.add( this, info );
     }
 
     render() {
-        let info = this._name + ' render' ;
-        console.log( info );
+        let info = 'render';
         replay.add( this, info );
     }
 } 

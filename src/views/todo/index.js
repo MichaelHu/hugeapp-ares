@@ -17,8 +17,7 @@ class TodoView extends Trackable {
     componentDidMount() {
         super.componentDidMount();
         setTimeout( () => {
-            let info = this._name + ' data ready' ;
-            console.log( info );
+            let info = this._replay_name + ' data ready' ;
             replay.add( this, info );
         }, 1000 );
     }
@@ -39,8 +38,7 @@ class TodoView extends Trackable {
         if ( text.length > 0 ) { 
             addTodo( this.refs.todo_text.value );
             this.refs.todo_text.value = '';
-            let info = this._name + ' addTodo ' + text ;
-            console.log( info );
+            let info = 'addTodo ' + text ;
             replay.add( this, info );
         }
     }

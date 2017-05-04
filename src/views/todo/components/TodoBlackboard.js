@@ -14,7 +14,6 @@ class TodoBlackboard extends Trackable {
     }
 
     componentDidUpdate() {
-        console.log( this.props.items );
         super.componentDidUpdate();
         this.drawText();
     }

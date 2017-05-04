@@ -9,6 +9,11 @@ import Trackable from './components/trackable';
 let topReducer = combineReducers( { todoapp } );
 let store = createStore( topReducer );
 
+let enableTrack = true;
+Trackable.replay
+    .init( store, /render|did-update|did-mount/ )
+    .start( 1000, enableTrack );
+
 ReactDOM.render( 
     <Provider store={store}>
         <Todo />
@@ -16,4 +21,3 @@ ReactDOM.render(
     , document.getElementById( 'root' ) 
 );
 
-Trackable.replay.start( 500 );

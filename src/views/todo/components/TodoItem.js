@@ -11,24 +11,21 @@ class TodoItem extends Trackable {
 
     onItemChange( e ) {
         let { item, toggleTodo, index } = this.props;
-        let info = `${this._name} toggleTodo ${item.content}`;
-        console.log( info );
+        let info = `toggleTodo ${item.content}`;
         replay.add( this, info );
         toggleTodo( index );
     }
 
     onDeleteButtonClick( e ) {
         let { item, deleteTodo, index } = this.props;
-        let info = `${this._name} deleteTodo ${item.content}`;
-        console.log( info );
+        let info = `deleteTodo ${item.content}`;
         replay.add( this, info );
         deleteTodo( index );
     }
 
     onViewButtonClick( e ) {
         let { item, switchCurrentTodo, index } = this.props;
-        let info = `${this._name} switchCurrentTodo ${item.content}`;
-        console.log( info );
+        let info = `switchCurrentTodo ${item.content}`;
         replay.add( this, info );
         switchCurrentTodo( index, item.content );
     }
