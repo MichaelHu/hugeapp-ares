@@ -1,0 +1,29 @@
+.graphtool {
+
+    display: inline-block;
+    vertical-align: middle;
+
+    :global .iconfont {
+        display: inline-block;
+        padding: 2px;
+        margin-left: 5px;
+        border-radius: 2px;
+        /* border: 1px solid #999; */
+        font-size: 20px;
+    }
+
+    :global .iconfont:first-of-type {
+        margin-left: 15px;
+    }
+
+    :global .iconfont:hover {
+        color: #888;
+        background-color: #333;
+    }
+
+    :global .iconfont:active {
+        color: #fff;
+        background-color: #000;
+    }
+
+}

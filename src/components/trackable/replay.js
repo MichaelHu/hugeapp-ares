@@ -3,20 +3,23 @@ var startTime = Date.now();
 var id = 1;
 var last, cur;
 var popupTipDom, popupTimer = null;
-var _trackEnabled = false;
 var _lastAction = null;
 
 // can be modified in console
-window.trackableFilter = /.*/;
+window.TRACKABLE_FILTER = /.*/;
 
 function getFilter() {
-    return window.trackableFilter || /.*/;
+    return window.TRACKABLE_FILTER || /.*/;
+}
+
+function getTrackEnabled() {
+    return window.TRACKABLE_ENABLED || false;
 }
 
 function add( inst, info ) {
-    if ( inst && _trackEnabled ) {
+    if ( inst && getTrackEnabled() ) {
         let action = _lastAction || 'SET_STATE', last;
-        console.log( '-> ' + _lastAction + ', ' + inst._replay_name + ', ' +  info );
+        console.log( '-> ' + action + ', ' + inst._replay_name + ', ' +  info );
         queue.push( {
             id: id++
             , ts: Date.now()
@@ -28,15 +31,16 @@ function add( inst, info ) {
 }
 
 function start( interval, trackEnabled ) {
-    _trackEnabled = trackEnabled; 
-    if ( !_trackEnabled ) {
+    window.TRACKABLE_ENABLED = trackEnabled; 
+    if ( !window.TRACKABLE_ENABLED ) {
         return;
     }
 
     console.info( [
         'From Trackable: '
         , '1. [ Alt-Q ]: stop play;'
-        , '2. set `window.trackableFilter` to filter messages' 
+        , '2. set `window.TRACKABLE_FILTER` to a RegExp to filter messages' 
+        , '3. set `window.TRACKABLE_ENABLED` to `true` to enable trackable'
     ].join( '\n' ) );
 
     setInterval( () => {
@@ -47,12 +51,13 @@ function start( interval, trackEnabled ) {
 function init( store, filter ) {
     var dispatch = store.dispatch;
     store.dispatch = function() {
-        console.info( 'dispatch ' + ( arguments[ 0 ].type || 'middleware action' ) );
+        window.TRACKABLE_ENABLED 
+            && console.info( 'dispatch ' + ( arguments[ 0 ].type || 'middleware action' ) );
         dispatch( ...arguments );
     };
 
     if ( filter && 'function' == typeof filter.test ) {
-        window.trackableFilter = filter;
+        window.TRACKABLE_FILTER = filter;
     }
     return this;
 }
@@ -91,7 +96,6 @@ function play() {
         return;
     }
 
-    let st;
     let elapsedTime = ( ( ts - startTime ) / 1000 ).toFixed( 3 ); 
     let formatInfo;
     // ${inst._replay_name}在``表达式中解析不了
@@ -99,12 +103,11 @@ function play() {
     if ( inst && ( inst.refs.dom || inst.refs[ inst._replay_ref ] ) ) {
         // console.log( `replay: ${formatInfo}` );
         cur = inst.refs.dom || inst.refs[ inst._replay_ref ];
-        st = window.getComputedStyle( cur );
         if ( last ) {
             last.removeTip();
         }
 
-        if ( !isRealShow( cur ) ) {
+        if ( !isRealShow( cur ) || cur && cur.nodeType != 1) {
             popupTip( formatInfo );
         }
         else {
@@ -122,12 +125,13 @@ function play() {
 
 function isRealShow( dom ) {
     let st, node = dom;
-    do {
+    while ( node && node.nodeType == 1 ) {
         st = window.getComputedStyle( node );
         if ( st[ 'display' ] == 'none' || st[ 'visibility' ] == 'hidden' ) {
             return false;
         }
-    } while ( ( node = node.parentNode ) && node.nodeType == 1 ); 
+        node = node.parentNode;
+    }  
     return true;
 }
 

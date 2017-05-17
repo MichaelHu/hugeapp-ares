@@ -1,0 +1,33 @@
+.layouttool {
+
+    display: inline-block;
+    line-height: 30px;
+    font-size: 12px;
+
+    ul {
+
+        list-style: none;
+        display: inline-block;
+
+        li {
+            display: inline-block;
+            height: 30px;
+            padding: 0 8px;
+            margin-left: 10px;
+            border-radius: 3px;
+            background-color: #d6d6d6;
+        }
+
+        li:hover {
+            color: #333;
+            background-color: #888;
+        }
+
+        li:active {
+            color: #fff;
+            background-color: #000;
+        }
+
+    }
+
+}

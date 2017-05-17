@@ -22,6 +22,28 @@ module.exports = {
                     }
                 }
             }
+            , {
+                test: /\.s?css$/
+                , use: [
+                    'style-loader'
+                    , {
+                        loader: 'css-loader'
+                        , options: {
+                            modules: true
+                        }
+                    }
+                    , 'sass-loader'
+                ]
+            }
+            , {
+                test: /\.(woff|eot|svg|ttf)$/
+                , use: {
+                    loader: 'file-loader'
+                    , options: {
+                        publicPath: '../dist/'
+                    }
+                }
+            }
         ]
     }
 };
