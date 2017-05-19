@@ -9,14 +9,15 @@ let replay = Trackable.replay;
 class Toolbar extends Trackable {
     constructor( props ) {
         super( props, 'Toolbar' );
+        console.log( props );
     }
 
     render() {
         super.render();
         return (
             <div ref="dom" className={styles.toolbar}>
-                <LayoutTool />
-                <GraphTool />
+                <LayoutTool {...this.props} />
+                <GraphTool {...this.props} />
             </div>
         );
     }

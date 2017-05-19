@@ -16,18 +16,24 @@
             margin-left: 10px;
             border-radius: 3px;
             background-color: #d6d6d6;
-        }
 
-        li:hover {
-            color: #333;
-            background-color: #888;
-        }
+            &:hover {
+                color: #333;
+                background-color: #888;
+            }
 
-        li:active {
-            color: #fff;
-            background-color: #000;
+            &:active {
+                color: #fff;
+                background-color: #000;
+            }
+
+            &.current {
+                color: #fff;
+                background-color: #000;
+            }
         }
 
     }
 
 }
+

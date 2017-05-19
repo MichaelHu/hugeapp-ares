@@ -3,5 +3,9 @@
     top: 75px;
     bottom: 0;
     width: 100%;
-    background-color: #eee;
+
+    .graph-container {
+        width: 100%;
+        height: 100%;
+    }
 }
